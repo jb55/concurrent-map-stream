@@ -21,21 +21,17 @@ returns a `through` stream
 
 ```js
 var queue = require('concurrent-map-stream');
-var stream = require('through')();
+var from = require('from');
 
 function worker(n, done) {
   setTimeout(function(){ done(null, n); }, n);
 }
 
-stream
+from([80, 50, 5, 100, 30, 20, 2])
 .pipe(queue(worker, 5))
 .pipe(through(function(n){
   console.log(n);
 }));
-
-[80, 50, 5, 100, 30, 20, 2].forEach(function(n){
-  stream.write(n);
-});
 
 // results in a stream numbers in the proper order
 // will only take at most 100ms to execute
