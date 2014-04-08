@@ -6,7 +6,7 @@
     "concurrent",
     "map"
   ],
-  "version": "0.0.1",
+  "version": "1.0.0",
   "repository": {
     "type": "git",
     "url": "git://github.com/jb55/concurrent-map-stream.git"
@@ -17,11 +17,15 @@
   },
   "dependencies": {
     "SimpleQueue": "0.0.1",
-    "through": "^2.3.4"
+    "debug": "^0.8.0",
+    "duplex": "^1.0.0"
   },
   "devDependencies": {
     "mocha": "*",
     "better-assert": "*",
-    "stream-reduce": "^1.0.3"
+    "through": "^2.3.4",
+    "stream-reduce": "^1.0.3",
+    "from": "^0.1.3",
+    "after": "^0.8.1"
   }
 }

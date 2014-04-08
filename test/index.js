@@ -1,25 +1,29 @@
 
-var assert = require('better-assert')
+var assert = require('better-assert');
 var through = require('through');
+var from = require('from');
 var reduce = require('stream-reduce');
 var queue = require('../');
+var debug = require('debug')('concurrent-map-stream:test');
 
-var consume = reduce(function(items, val){
-  items.push(val);
-  return items;
-}, []);
+var consume = function(){
+  return reduce(function(items, val){
+    debug("consuming %s", val);
+    items.push(val);
+    return items;
+  }, []);
+};
 
 function worker(n, done) {
   setTimeout(function(){ done(null, n); }, n);
 }
 
 describe('concurrent-map-stream', function(){
-  it('works', function(done){
-    var stream = through()
+  it('sync works', function(done){
 
-    stream
-    .pipe(queue(worker, 4))
-    .pipe(consume)
+    from([80, 50, 5, 2, 3, 25, 60, 15])
+    .pipe(queue(worker, 5))
+    .pipe(consume())
     .pipe(through(function(items){
       assert(items[0] === 80);
       assert(items[1] === 50);
@@ -32,9 +36,35 @@ describe('concurrent-map-stream', function(){
       done();
     }));
 
-    [80, 50, 5, 2, 3, 25, 60, 15].forEach(function(n){
-      stream.write(n);
-    });
+  });
+
+  it('async works', function(done) {
+    var stream = through();
+    stream.pause();
+
+    stream
+    .pipe(queue(worker, 5))
+    .pipe(consume())
+    .pipe(through(function(items){
+      assert(items[0] === 80);
+      assert(items[1] === 20);
+      assert(items[2] === 2);
+      assert(items[3] === 60);
+      assert(items[4] === 79);
+      assert(items[5] === 21);
+      done();
+    }));
+
+    stream.write(80);
+    stream.write(20);
+    stream.write(2);
+    stream.write(60);
+    stream.write(79);
+
+    setTimeout(function(){
+      stream.queue(21);
+      stream.resume();
+    }, 100);
 
   });
 });
