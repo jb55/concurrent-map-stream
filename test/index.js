@@ -29,12 +29,17 @@ describe('concurrent-map-stream', function(){
       assert(items[5] === 25);
       assert(items[6] === 60);
       assert(items[7] === 15);
+      assert(items[8] === 3);
       done();
     }));
 
     [80, 50, 5, 2, 3, 25, 60, 15].forEach(function(n){
       stream.write(n);
     });
+
+    setTimeout(function(){
+      stream.write(3);
+    }, 100);
 
   });
 });
