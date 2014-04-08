@@ -1,7 +1,11 @@
 {
   "name": "concurrent-map-stream",
   "description": "Concurrently transform a stream in FIFO order",
-  "keywords": ["stream", "concurrent", "map"],
+  "keywords": [
+    "stream",
+    "concurrent",
+    "map"
+  ],
   "version": "0.0.1",
   "repository": {
     "type": "git",
