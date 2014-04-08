@@ -21,7 +21,7 @@ returns a `through` stream
 
 ```js
 var queue = require('concurrent-map-stream');
-var through = require('through');
+var stream = require('through')();
 
 function worker(n, done) {
   setTimeout(function(){ done(null, n); }, n);
