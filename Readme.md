@@ -1,4 +1,3 @@
-
 # concurrent-map-stream
 
   Concurrently transform a stream in FIFO order
@@ -15,7 +14,7 @@
 
 ### queue(worker, concurrency)
 
-returns a `through` stream
+returns a [duplex](http://npmrepo.com/duplex) stream
 
 ## Example
 
